@@ -18,13 +18,14 @@ from pod import simulation,pods,world,gui
 import sys,os,imp,time
 
 ###  START OF PROGRAM
-world = world.World("worlds_test/"+world_name+".world")
+world = world.World("worlds/"+world_name+".world")
 
 
-punters_path="punters_test/"+name
+punters_path="punters/"+name
 
 #http://stackoverflow.com/questions/279237/python-import-a-module-from-a-folder
 
+# TODO don't do paths like this
 sys.path.append(punters_path)
 fin=open(punters_path+"/plugin.py",'r')
 punter_mod=imp.load_source(name,punters_path+"/",fin)
