@@ -21,10 +21,12 @@ def equip_car(pod):
     pod.poly=[(-10,-10),(-5,20),(5,20),(10,-10)]
     
     
-def controller(pod,control):   
+def controller(pod):
    
     vel=pod.state.vel
-    
+    control=pod.control
+
+
     if vel < pod.data.pram[0]:
         control.up=pod.data.pram[1]
     else:

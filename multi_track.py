@@ -1,5 +1,6 @@
 """
-Showing how to use the gui (nice for debugging)
+Showing how to switch tracks (worlds).
+
 """
 
 import math
@@ -17,9 +18,9 @@ def test_world(pod,track):
         simple_gui.setWorld(track)
     
     while True:
-        control.up=.1
-        control.left=.015
-        pod.step(control)
+        pod.control.up=.1
+        pod.control.left=.015
+        pod.step()
         
         if GUI:       
             # refresh the display.

@@ -1,5 +1,6 @@
 # This code runs all the plugins in the folders in punters_test directory  using all the tracks in worlds_test
 # The scores are written to results_test/results.txt
+#
  
 TIME_LIMIT=40.0      # Maximum time allowed for each attempt
 TRIPS_LIMIT=60.0     # Goal in number of trip wires
@@ -15,6 +16,8 @@ MUSIC=["MUSIC/The Wacky Races.mp3","MUSIC/flight_of_the_bumblebee_2.ogg",'MUSIC/
 
 import subprocess
 import operator,importlib,traceback
+import scorer
+
 
 from pod import simulation,pods,world
 if GUI:
@@ -65,35 +68,6 @@ def all_punters(ex):
                     
     return punters
 
-def evaluate(pod):
-   
-    if pod.state.age > TIME_LIMIT:
-        dist=pod.state.pos_trips-pod.state.neg_trips
-        mess=" Time limit. Trips wires crossed ="+str(dist)
-        score=dist
-        pod.stat='T'
-        return score,True,mess
-    
-    if pod.state.pos_trips - pod.state.neg_trips > TRIPS_LIMIT:
-        mess=" Success age="+str(pod.state.age)
-        score=TRIPS_LIMIT + (TIME_LIMIT-pod.state.age)  
-        pod.stat='S'
-        return score,True,mess
-    
-   
-
-    if pod.state.collide:
-        dist=pod.state.pos_trips-pod.state.neg_trips+pod.state.seg_pos
-        age=pod.state.age
-        mess=" Crashed age="+str(age)+" progress ="+str(dist)
-        score=dist
-        pod.stat='C'
-        return score,True,mess
-    
-    dist=pod.state.pos_trips-pod.state.neg_trips
-    score=dist
-    pod.stat='R'
-    return score,False,""
 
 def tester(world_name,punter_names,fout):
 
@@ -136,7 +110,7 @@ def tester(world_name,punter_names,fout):
             os.chdir(default_dir)
             
             pod.controller=plug.controller
-            pod.control_state=pods.Control()
+
 
             hue=(360.0*cnt)/N
             col=pygame.Color(0)
@@ -176,17 +150,10 @@ def tester(world_name,punter_names,fout):
             try:
 
 
-                if USE_PREV_CONTROL:
-                    control=pod.control_state
-                else:
-                    control.left=0
-                    control.right=0
-                    control.up=0
-                    control.down=0
 
-                pod.controller(pod,control)    
-                pod.step(control)
-                score,kill,mess=evaluate(pod)
+                pod.controller(pod)
+                pod.step()
+                score,kill,mess=scorer.evaluate(pod)
                 pod.score=max(score,0)
                 pod.mess=mess
         

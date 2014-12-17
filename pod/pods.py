@@ -88,9 +88,8 @@ class Pod:
         
         self.world=world
         self.message="init"
-       # self.control=Control()
+        self.control=Control()
         self.sensors=[]
-       # self.base_init()    
         self.col=col
         if world != None:
             world.init_pod(self)
@@ -112,10 +111,7 @@ class Pod:
             self.sensor_x2=len(sensors)*[0.0]
             self.sensor_y2=len(sensors)*[0.0]
         self.update_sensors()    
-              
-    def setController(self,controller):
-       self.controller=controller
-             
+
     def base_init(self):
         self.state=State() 
         self.state.ang=math.pi
@@ -187,8 +183,7 @@ class CarPod(Pod):
  
     def __init__(self,world,col=(255,0,0)):
         Pod.__init__(self,world,col)
-        self.control=None
-        
+
     def setColour(self,col):
         self.col=col
         
@@ -202,20 +197,20 @@ class CarPod(Pod):
         self.slip_speed_thresh=100.
         self.slip_speed_max=200.
         
-        self.damp=.0001
+        self.damp=.00001
         #self.vel=0.0
         self.fuel=0.0
         self.state.distance_travelled=0.0
    
         
         
-    def step(self,control):
-        
+    def step(self):
+
+
         world=self.world
         dt=world.dt
         state=self.state
-        self.control=control
-        
+
         #self.fuel -= self.control.up*dt
         self.state.age += dt
         

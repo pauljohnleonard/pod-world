@@ -1,7 +1,7 @@
 
 # This code would be a good place to start your evolution coding.
 
-import math
+import math,random
 from pod import world,gui,pods       
   
 # flag to switch GUI on/off  
@@ -12,10 +12,11 @@ def equip_car(pod):
     sensors=[pods.Sensor(angle=0.4,name="Left"),pods.Sensor(angle=-0.4,name="Right")]
     pod.addSensors(sensors) 
     pod.col=(0,255,0)
+    pod.data=[100,2]    # default control system parameters
     
-    pod.my_data="Cool festure of python. YOu can add your own data to an object"
+    
 
-def controller(pod,control):
+def controller(pod):
     """
     In your system you would be wanting to change parameters that are used here after each evaluation.
     """
@@ -24,23 +25,24 @@ def controller(pod,control):
     
     vel=state.vel
     
-    if vel < 100:
-        control.up=0.5
+    if vel < pod.data[0]:
+        pod.control.up=pod.data[1]
     else:
-        control.up=0.0
+        pod.control.up=0.0
        
        
     left=sensors[0].val
     right=sensors[1].val
+    
     print left,right
     
     if left < right:
-        control.left=0
-        control.right=.5
+        pod.control.left=0
+        pod.control.right=.5
   
     else:
-        control.left=.5
-        control.right=0
+        pod.control.left=.5
+        pod.control.right=0
 
 def evaluate(pod):
     """
@@ -66,15 +68,13 @@ def evaluate(pod):
         if pod.state.pos_trips-pod.state.neg_trips > 15:
             return 100
         
-        controller(pod,control)      
-        pod.step(control)
+        controller(pod)
+        pod.step()
         
 
 worldFile="worlds/carCircuit.world"
 
 
-# use a control to activate the car.
-control=pods.Control()
 
 # create  the world
 world=world.World(worldFile)  
@@ -90,4 +90,23 @@ if GUI:
     frames_per_sec=4
     simple_gui=gui.SimpleGui(frames_per_sec=frames_per_sec,world=world,pods=[pod])
 
-print " Performance=",evaluate(pod)
+
+max_val=0     #    max_val keeps track of the best so far
+
+def make_a_guess():
+    return [3000*random.random(),random.random()]
+
+
+searching=True
+goal=100
+
+while max_val < 100:
+    
+    pod.data=make_a_guess()
+    
+    fitness=evaluate(pod)
+    
+    if fitness > max_val:
+        max_val=fitness
+        max_data=pod.data
+        print " best so far ",max_val,max_data

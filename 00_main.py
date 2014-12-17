@@ -17,16 +17,14 @@ myWorld=world.World(worldFile)
 # Note that the world is responsible for setting the initial state of the pod
 pod=pods.CarPod(myWorld)
 
-# use a control to activate the car.
-control=pods.Control()
 
 while True:
     
-    control.up=.1
-    control.left=.1
+    pod.control.up=.1
+    pod.control.left=.1
     
     # perform a single time step of the car.
-    pod.step(control)
+    pod.step()
     
     # the state should change (look at the console)
     print pod.state  

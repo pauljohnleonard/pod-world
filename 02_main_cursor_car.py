@@ -7,8 +7,6 @@ import math
 
 worldFile="worlds/rectWorld.world"
 
-# use a control to activate the car.
-control=pods.Control()
 
 # create  the world
 world=world.World(worldFile)  
@@ -32,28 +30,29 @@ while True:
     #                          right - steer right
     #    
     if keys[gui.keys.K_UP]:
-        control.up=1.0
+        pod.control.up=1.0
     else:
-        control.up=.0
+        pod.control.up=.0
           
     if keys[gui.keys.K_DOWN]:
-        control.down=1.0
+        pod.control.down=1.0
     else:
-        control.down=.0
-        
+        pod.control.down=.0
+
+
     if keys[gui.keys.K_LEFT]:
-        control.left=.2
+        pod.control.left=.2
     else:
-        control.left=.0
+        pod.control.left=.0
   
     if keys[gui.keys.K_RIGHT]:
-        control.right=.2
+        pod.control.right=.2
     else:
-        control.right=.0
+        pod.control.right=.0
       
         
     # Simulate dt of time
-    pod.step(control)
+    pod.step()
     
     
     simple_gui.set_message(str(pod.state))  

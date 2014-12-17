@@ -10,9 +10,6 @@ from pod import pods,world,gui
 
 worldFile="worlds/carCircuit.world"
 
-# use a control object to do thrust steer etc.
-control=pods.Control()
-
 # create  the world
 world=world.World(worldFile)  
 pod=pods.CarPod(world)
@@ -20,10 +17,13 @@ pod=pods.CarPod(world)
 # I set the frame rate so the animation is real time (you can make it faster/slower if you want) 
 simple_gui=gui.SimpleGui(frames_per_sec=int(1/world.dt),world=world,pods=[pod])
 
+pod.control.up=.1
+
+pod.control.left=.4
+
 while True:
-    control.up=.1
-    control.left=.015
-    pod.step(control)
+
+    pod.step()
     
     # YOu can display debug text if you want.
     mess=str(pod.state)
