@@ -1,0 +1,66 @@
+1. Pod state data
+=================
+
+ This contains information about the pod.
+
+ If you have a pod then pod.state.x is it's s position
+ 
+ The controller in the plugin has a parameter which is the current
+ state of the pod 
+ 
+
+ ef controller(sensors,state,control):   
+      ... your code   
+ 
+ See 00_main.py for example of printing the state data.
+ 
+--  position from top left of screen (in pixels):
+y 
+x
+
+-- rate of change of x and y  and the velocity (to make life easy for you)
+dydt 
+dxdt 
+vel 
+
+
+-- angle of pod from in radians anti-clockwise ?
+-- 0 is pointing down    up is PI   
+ang        can be greater than 2pi (so it wraps around)
+dangdt     rate of change of angle (spin)
+
+-- progress in terms of trip wires crossed
+pos_trips
+neg_trips
+
+   after collision with the side further information about progress  (0-1 measures progress from porevious to next trip)
+seg_pos 0.4
+
+--- Other stuff 
+distance_travelled     (forward and backward) 
+age     
+collide_count  (number of time we have hit a wall)
+collide True/False
+slip    (0-1   1 means slipping a lot) 
+
+
+2. Sensors
+==========
+
+Can be placed at a given angle in radians anti-clockwise form direction of travel (pointy bit)
+
+See simple/plugin.py
+
+Sensors will tell you the distance to a wall.
+
+3. Control
+==========
+
+ A  control object has 4 fields which can be assign values between 0 and 1.
+
+up      thrust
+down    brake
+left    as on the can
+right   ditto
+
+ see 02_main_cursor_car.py
