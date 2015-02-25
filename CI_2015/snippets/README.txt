@@ -1,0 +1,1 @@
+This directory contains some examples to demonstrate useful features of python.
